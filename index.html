@@ -20,55 +20,5 @@
       </select>
     </div>
 
-    <div class="form-group">
-      <label id="amountLabel">請輸入發票金額或含稅金額：</label>
-      <input type="number" id="amount" placeholder="請輸入金額" min="0" value="0" />
-    </div>
+    <div class="form-gro
 
-    <div class="form-group" id="feeBlock">
-      <label>請輸入手續費金額：</label>
-      <input type="number" id="fee" placeholder="請輸入手續費金額" min="0" value="0" />
-    </div>
-
-    <button onclick="calculateTax()">計算稅額</button>
-
-    <div id="result"></div>
-<button id="exportBtn" type="button" onclick="exportExcel()" style="display:none;">
-  匯出付款單 Excel
-</button>
-
-
-    
-    <div class="tax-description">
-      <h3>稅別說明</h3>
-      <div class="tax-info-grid">
-        <div class="tax-info-card">
-          <div class="tax-content">
-            <h4>FB稅（3%）</h4>
-            <p>Facebook廣告費用扣繳稅，適用於Facebook廣告投放費用。</p>
-          </div>
-        </div>
-        
-        <div class="tax-info-card">
-          <div class="tax-content">
-            <h4>境外稅（20%）</h4>
-            <p>境外服務費用扣繳稅，適用於境外數位服務費用。</p>
-          </div>
-        </div>
-        
-        <div class="tax-info-card">
-          <div class="tax-content">
-            <h4>營業稅（5%）</h4>
-            <p>臺灣營業稅計算，適用於國內商品銷售或勞務提供。</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-<script src="excel-template.js"></script>
-<script src="calculator.js"></script>
-
-</body>
-</html>
