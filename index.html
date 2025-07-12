@@ -1,66 +1,67 @@
-<!DOCTYPE html>
-<html lang="zh-Hant">
-<head>
-  <meta charset="UTF-8" />
-  <title>稅額計算器</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="container">
-    <h2>稅額計算器</h2>
-    <p class="disclaimer">算錯要請Tina喝飲料</p>
-    
-    <div class="form-group">
-      <label for="taxType">選擇稅別：</label>
-      <select id="taxType">
-        <option value="fb">FB（3%）</option>
-        <option value="foreign">其他境外（20%）</option>
-        <option value="taiwan">臺灣營業稅（5%）</option>
-      </select>
-    </div>
+function updateLabel() {
+  const taxType = document.getElementById('taxType').value;
+  const label = document.getElementById('amountLabel');
+  const feeBlock = document.getElementById('feeBlock');
 
-    <div class="form-group">
-      <label id="amountLabel">請輸入發票金額或含稅金額：</label>
-      <input type="number" id="amount" placeholder="請輸入金額" min="0" value="0" />
-    </div>
+  if (taxType === 'fb' || taxType === 'foreign') {
+    label.textContent = '請輸入發票/信用卡金額：';
+    feeBlock.style.display = 'block';
+  } else {
+    label.textContent = '請輸入發票金額或含稅金額：';
+    feeBlock.style.display = 'none';
+  }
+}
 
-    <div class="form-group" id="feeBlock">
-      <label>請輸入手續費金額：</label>
-      <input type="number" id="fee" placeholder="請輸入手續費金額" min="0" value="0" />
-    </div>
+function formatCurrency(amount) {
+  return Math.round(amount).toLocaleString('zh-TW');
+}
 
-    <button onclick="calculateTax()">計算稅額</button>
+function calculateTax() {
+  const type = document.getElementById('taxType').value;
+  const amount = parseFloat(document.getElementById('amount').value) || 0;
+  const fee = parseFloat(document.getElementById('fee').value) || 0;
+  let total = 0;
+  let tax = 0;
 
-    <div id="result"></div>
-    
-    <div class="tax-description">
-      <h3>稅別說明</h3>
-      <div class="tax-info-grid">
-        <div class="tax-info-card">
-          <div class="tax-content">
-            <h4>FB稅（3%）</h4>
-            <p>Facebook廣告費用扣繳稅，適用於Facebook廣告投放費用。</p>
-          </div>
-        </div>
-        
-        <div class="tax-info-card">
-          <div class="tax-content">
-            <h4>境外稅（20%）</h4>
-            <p>境外服務費用扣繳稅，適用於境外數位服務費用。</p>
-          </div>
-        </div>
-        
-        <div class="tax-info-card">
-          <div class="tax-content">
-            <h4>營業稅（5%）</h4>
-            <p>臺灣營業稅計算，適用於國內商品銷售或勞務提供。</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <script src="calculator.js"></script>
-</body>
-</html>
+  if (type === 'fb') {
+    total = amount / 0.97;
+    tax = Math.floor(total * 0.03);
+  } else if (type === 'foreign') {
+    total = amount / 0.8;
+    tax = Math.floor(total * 0.2);
+  } else if (type === 'taiwan') {
+    tax = Math.round((amount / 1.05) * 0.05);
+    total = amount;
+  }
+
+  const requesterAmount = (type === 'taiwan') ? amount : amount + fee;
+
+  let output = '';
+  if (type === 'taiwan') {
+    output += `營業稅：${formatCurrency(tax)} 元\n`;
+  } else {
+    output += `國稅局：${formatCurrency(tax)} 元\n`;
+  }
+  output += `請款人：${formatCurrency(requesterAmount)} 元`;
+
+  const resultDiv = document.getElementById('result');
+  resultDiv.textContent = output;
+  resultDiv.classList.add('show');
+}
+
+function setupAutoClear(id) {
+  const input = document.getElementById(id);
+  input.addEventListener('focus', () => {
+    if (input.value === "0") input.value = "";
+  });
+  input.addEventListener('blur', () => {
+    if (input.value === "") input.value = "0";
+  });
+}
+
+document.getElementById('taxType').addEventListener('change', updateLabel);
+window.onload = function () {
+  updateLabel();
+  setupAutoClear("amount");
+  setupAutoClear("fee");
+};
