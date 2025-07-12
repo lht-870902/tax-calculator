@@ -65,3 +65,51 @@ window.onload = function () {
   setupAutoClear("amount");
   setupAutoClear("fee");
 };
+function exportExcel() {
+  const taxType = document.getElementById("taxType").value;
+  const amount = parseFloat(document.getElementById("amount").value);
+  const fee = parseFloat(document.getElementById("fee").value);
+  const today = new Date();
+  const dateStr = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`;
+
+  // 判斷稅別使用的工作表
+  let sheetName, fileName;
+  if (taxType === "fb") {
+    sheetName = "付款憑單 FB";
+    fileName = "付款單_FB.xlsx";
+  } else if (taxType === "foreign") {
+    sheetName = "付款憑單 境外稅";
+    fileName = "付款單_其他境外.xlsx";
+  } else {
+    alert("臺灣營業稅不適用匯出功能");
+    return;
+  }
+
+  // base64 → binary
+  const binary = atob(excelTemplateBase64);
+  const buffer = new ArrayBuffer(binary.length);
+  const view = new Uint8Array(buffer);
+  for (let i = 0; i < binary.length; i++) {
+    view[i] = binary.charCodeAt(i);
+  }
+
+  // 使用 XLSX 套件讀取
+  const workbook = XLSX.read(buffer, { type: "array" });
+  const sheet = workbook.Sheets[sheetName];
+  if (!sheet) return alert("找不到對應工作表");
+
+  // 寫入資料
+  sheet["F8"] = { t: "n", v: amount };
+  sheet["F9"] = { t: "n", v: fee };
+  sheet["D4"] = { t: "s", v: dateStr };
+
+  // 匯出
+  const wbout = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+  const blob = new Blob([wbout], { type: "application/octet-stream" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
