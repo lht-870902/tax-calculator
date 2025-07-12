@@ -4,17 +4,15 @@
 
 ## 檔案結構
 
-```
 稅額計算器/
-├── index.html          # 主要HTML檔案
-├── style.css           # 樣式檔案
-├── calculator.js       # 計算邏輯
-└── README.md           # 說明文件
-```
+├── index.html # 主要HTML檔案
+├── style.css # 樣式檔案
+├── calculator.js # 計算邏輯
+└── README.md # 說明文件
 
 ## 使用方式
 
-1. 直接雙擊 `index.html` 檔案即可在瀏覽器中開啟
+1. 直接雙擊 index.html 檔案即可在瀏覽器中開啟
 2. 不需要網路連線，完全離線運作
 3. 支援所有現代瀏覽器（Chrome、Firefox、Safari、Edge）
 
