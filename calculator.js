@@ -48,6 +48,9 @@ function calculateTax() {
   resultDiv.textContent = output;
   resultDiv.classList.add('show');
 }
+ const exportBtn = document.getElementById('exportBtn');
+  exportBtn.style.display = 'block';
+}
 
 function setupAutoClear(id) {
   const input = document.getElementById(id);
