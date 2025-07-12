@@ -33,7 +33,10 @@
     <button onclick="calculateTax()">計算稅額</button>
 
     <div id="result"></div>
-<button onclick="exportExcel()">匯出付款單 Excel</button>
+<button id="exportBtn" type="button" onclick="exportExcel()" style="display:none;">
+  匯出付款單 Excel
+</button>
+
 
     
     <div class="tax-description">
