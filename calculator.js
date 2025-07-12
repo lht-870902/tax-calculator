@@ -47,10 +47,17 @@ function calculateTax() {
   const resultDiv = document.getElementById('result');
   resultDiv.textContent = output;
   resultDiv.classList.add('show');
+
+  // 這裡新增匯出按鈕顯示
+  const exportBtn = document.getElementById('exportBtn');
+  if (type === 'taiwan') {
+    // 臺灣營業稅不支援匯出，隱藏按鈕
+    exportBtn.style.display = 'none';
+  } else {
+    exportBtn.style.display = 'block';
+  }
 }
- const exportBtn = document.getElementById('exportBtn');
-  exportBtn.style.display = 'block';
-}
+
 
 function setupAutoClear(id) {
   const input = document.getElementById(id);
